@@ -1,6 +1,6 @@
 Name:          replacer
 Version:       1.5.2
-Release:       3%{?dist}
+Release:       4%{?dist}
 Summary:       Replacer Maven Mojo
 License:       MIT
 URL:           http://code.google.com/p/maven-replacer-plugin/
@@ -59,6 +59,9 @@ This package contains javadoc for %{name}.
 %files javadoc -f .mfiles-javadoc
 
 %changelog
+* Fri Mar 28 2014 Michael Simacek <msimacek@redhat.com> - 1.5.2-4
+- Use Requires: java-headless rebuild (#1067528)
+
 * Sun Aug 04 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.5.2-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
 
