@@ -21,6 +21,7 @@ BuildRequires: mvn(xerces:xercesImpl)
 BuildRequires: mvn(junit:junit)
 BuildRequires: mvn(org.hamcrest:hamcrest-all)
 BuildRequires: mvn(org.mockito:mockito-all)
+BuildRequires: mvn(xml-apis:xml-apis)
 
 BuildRequires: maven-local
 BuildRequires: maven-plugin-plugin
@@ -43,6 +44,8 @@ This package contains javadoc for %{name}.
 %setup -q
 
 %pom_remove_plugin :dashboard-maven-plugin
+# NoClassDefFoundError: org/w3c/dom/ElementTraversal
+%pom_add_dep xml-apis:xml-apis::test
 
 %mvn_file :%{name} %{name}
 %mvn_alias :%{name} com.google.code.maven-replacer-plugin:maven-replacer-plugin
