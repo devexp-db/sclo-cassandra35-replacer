@@ -1,20 +1,21 @@
 Name:          replacer
-Version:       1.5.2
-Release:       5%{?dist}
+Version:       1.5.3
+Release:       1%{?dist}
 Summary:       Replacer Maven Mojo
 License:       MIT
 URL:           http://code.google.com/p/maven-replacer-plugin/
-# svn export http://maven-replacer-plugin.googlecode.com/svn/tags/replacer-1.5.2/trunk/ replacer-1.5.2
-# tar czf replacer-1.5.2-src-svn.tar.gz replacer-1.5.2
-Source0:       %{name}-%{version}-src-svn.tar.gz
-# replacer don't include the license file. see: http://code.google.com/p/maven-replacer-plugin/issues/detail?id=84
-BuildRequires: java-devel
-
+# svn export http://maven-replacer-plugin.googlecode.com/svn/tags/replacer-1.5.3/trunk/ replacer-1.5.3
+# tar cJf replacer-1.5.3.tar.xz replacer-1.5.3
+Source0:       %{name}-%{version}.tar.xz
 BuildRequires: mvn(commons-io:commons-io)
 BuildRequires: mvn(commons-lang:commons-lang)
 BuildRequires: mvn(org.apache.ant:ant)
 BuildRequires: mvn(org.apache.maven:maven-plugin-api)
+%if %{?fedora} > 20
+BuildRequires: mvn(org.sonatype.oss:oss-parent:pom:)
+%else
 BuildRequires: mvn(org.sonatype.oss:oss-parent)
+%endif
 BuildRequires: mvn(xerces:xercesImpl)
 
 # test deps
@@ -47,6 +48,9 @@ This package contains javadoc for %{name}.
 # NoClassDefFoundError: org/w3c/dom/ElementTraversal
 %pom_add_dep xml-apis:xml-apis::test
 
+sed -i.hamcrest '/startsWith/d' src/test/java/com/google/code/maven_replacer_plugin/file/FileUtilsTest.java
+sed -i 's/\r//' LICENSE.txt
+
 %mvn_file :%{name} %{name}
 %mvn_alias :%{name} com.google.code.maven-replacer-plugin:maven-replacer-plugin
 
@@ -58,10 +62,15 @@ This package contains javadoc for %{name}.
 %mvn_install
 
 %files -f .mfiles
+%doc LICENSE.txt
 
 %files javadoc -f .mfiles-javadoc
+%doc LICENSE.txt
 
 %changelog
+* Thu Jul 03 2014 gil cattaneo <puntogil@libero.it> 1.5.3-1
+- update to 1.5.3
+
 * Sun Jun 08 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.5.2-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
