@@ -1,6 +1,6 @@
 Name:          replacer
 Version:       1.5.3
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       Replacer Maven Mojo
 License:       MIT
 URL:           http://code.google.com/p/maven-replacer-plugin/
@@ -11,11 +11,7 @@ BuildRequires: mvn(commons-io:commons-io)
 BuildRequires: mvn(commons-lang:commons-lang)
 BuildRequires: mvn(org.apache.ant:ant)
 BuildRequires: mvn(org.apache.maven:maven-plugin-api)
-%if %{?fedora} > 20
 BuildRequires: mvn(org.sonatype.oss:oss-parent:pom:)
-%else
-BuildRequires: mvn(org.sonatype.oss:oss-parent)
-%endif
 BuildRequires: mvn(xerces:xercesImpl)
 
 # test deps
@@ -62,12 +58,15 @@ sed -i 's/\r//' LICENSE.txt
 %mvn_install
 
 %files -f .mfiles
-%doc LICENSE.txt
+%license LICENSE.txt
 
 %files javadoc -f .mfiles-javadoc
-%doc LICENSE.txt
+%license LICENSE.txt
 
 %changelog
+* Wed Feb 11 2015 gil cattaneo <puntogil@libero.it> 1.5.3-2
+- introduce license macro
+
 * Thu Jul 03 2014 gil cattaneo <puntogil@libero.it> 1.5.3-1
 - update to 1.5.3
 
