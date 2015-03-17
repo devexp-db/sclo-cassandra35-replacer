@@ -1,27 +1,24 @@
 Name:          replacer
-Version:       1.5.3
-Release:       2%{?dist}
+Version:       1.6
+Release:       1%{?dist}
 Summary:       Replacer Maven Mojo
 License:       MIT
-URL:           http://code.google.com/p/maven-replacer-plugin/
-# svn export http://maven-replacer-plugin.googlecode.com/svn/tags/replacer-1.5.3/trunk/ replacer-1.5.3
-# tar cJf replacer-1.5.3.tar.xz replacer-1.5.3
-Source0:       %{name}-%{version}.tar.xz
-BuildRequires: mvn(commons-io:commons-io)
-BuildRequires: mvn(commons-lang:commons-lang)
-BuildRequires: mvn(org.apache.ant:ant)
-BuildRequires: mvn(org.apache.maven:maven-plugin-api)
-BuildRequires: mvn(org.sonatype.oss:oss-parent:pom:)
-BuildRequires: mvn(xerces:xercesImpl)
-
-# test deps
-BuildRequires: mvn(junit:junit)
-BuildRequires: mvn(org.hamcrest:hamcrest-all)
-BuildRequires: mvn(org.mockito:mockito-all)
-BuildRequires: mvn(xml-apis:xml-apis)
+URL:           https://github.com/beiliubei/maven-replacer-plugin
+# http://code.google.com/p/maven-replacer-plugin/
+Source0:       https://github.com/beiliubei/maven-replacer-plugin/archive/%{version}.tar.gz
 
 BuildRequires: maven-local
-BuildRequires: maven-plugin-plugin
+BuildRequires: mvn(commons-io:commons-io)
+BuildRequires: mvn(commons-lang:commons-lang)
+BuildRequires: mvn(junit:junit)
+BuildRequires: mvn(org.apache.ant:ant)
+BuildRequires: mvn(org.apache.maven:maven-plugin-api)
+BuildRequires: mvn(org.apache.maven.plugins:maven-plugin-plugin)
+BuildRequires: mvn(org.hamcrest:hamcrest-all)
+BuildRequires: mvn(org.mockito:mockito-all)
+BuildRequires: mvn(org.sonatype.oss:oss-parent:pom:)
+BuildRequires: mvn(xerces:xercesImpl)
+BuildRequires: mvn(xml-apis:xml-apis)
 
 BuildArch:     noarch
 
@@ -38,14 +35,14 @@ Summary:       Javadoc for %{name}
 This package contains javadoc for %{name}.
 
 %prep
-%setup -q
+%setup -q -n maven-replacer-plugin-%{version}
 
 %pom_remove_plugin :dashboard-maven-plugin
+%pom_remove_plugin :maven-assembly-plugin
 # NoClassDefFoundError: org/w3c/dom/ElementTraversal
 %pom_add_dep xml-apis:xml-apis::test
 
 sed -i.hamcrest '/startsWith/d' src/test/java/com/google/code/maven_replacer_plugin/file/FileUtilsTest.java
-sed -i 's/\r//' LICENSE.txt
 
 %mvn_file :%{name} %{name}
 %mvn_alias :%{name} com.google.code.maven-replacer-plugin:maven-replacer-plugin
@@ -58,12 +55,17 @@ sed -i 's/\r//' LICENSE.txt
 %mvn_install
 
 %files -f .mfiles
-%license LICENSE.txt
+%doc README.md
+%license LICENSE
 
 %files javadoc -f .mfiles-javadoc
-%license LICENSE.txt
+%license LICENSE
 
 %changelog
+* Tue Mar 17 2015 gil cattaneo <puntogil@libero.it> 1.6-1
+- update to 1.6
+- fix Url tag and Source0 tag
+
 * Wed Feb 11 2015 gil cattaneo <puntogil@libero.it> 1.5.3-2
 - introduce license macro
 
