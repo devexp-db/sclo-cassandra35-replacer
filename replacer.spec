@@ -1,6 +1,6 @@
 Name:          replacer
 Version:       1.6
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       Replacer Maven Mojo
 License:       MIT
 URL:           https://github.com/beiliubei/maven-replacer-plugin
@@ -62,6 +62,9 @@ sed -i.hamcrest '/startsWith/d' src/test/java/com/google/code/maven_replacer_plu
 %license LICENSE
 
 %changelog
+* Thu Jun 18 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.6-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
+
 * Tue Mar 17 2015 gil cattaneo <puntogil@libero.it> 1.6-1
 - update to 1.6
 - fix Url tag and Source0 tag
