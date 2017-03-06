@@ -1,26 +1,30 @@
-Name:          replacer
-Version:       1.6
-Release:       4%{?dist}
-Summary:       Replacer Maven Mojo
-License:       MIT
-URL:           https://github.com/beiliubei/maven-replacer-plugin
+%{?scl:%scl_package replacer}
+%{!?scl:%global pkg_name %{name}}
+
+Name:		%{?scl_prefix}replacer
+Version:	1.6
+Release:	5%{?dist}
+Summary:	Replacer Maven Mojo
+License:	MIT
+URL:		https://github.com/beiliubei/maven-replacer-plugin
 # http://code.google.com/p/maven-replacer-plugin/
-Source0:       https://github.com/beiliubei/maven-replacer-plugin/archive/%{version}.tar.gz
+Source0:	https://github.com/beiliubei/maven-replacer-plugin/archive/%{version}.tar.gz
 
-BuildRequires: maven-local
-BuildRequires: mvn(commons-io:commons-io)
-BuildRequires: mvn(commons-lang:commons-lang)
-BuildRequires: mvn(junit:junit)
-BuildRequires: mvn(org.apache.ant:ant)
-BuildRequires: mvn(org.apache.maven:maven-plugin-api)
-BuildRequires: mvn(org.apache.maven.plugins:maven-plugin-plugin)
-BuildRequires: mvn(org.hamcrest:hamcrest-all)
-BuildRequires: mvn(org.mockito:mockito-all)
-BuildRequires: mvn(org.sonatype.oss:oss-parent:pom:)
-BuildRequires: mvn(xerces:xercesImpl)
-BuildRequires: mvn(xml-apis:xml-apis)
+BuildRequires:	%{?scl_prefix_maven}maven-local
+BuildRequires:	%{?scl_prefix_java_common}apache-commons-io
+BuildRequires:	%{?scl_prefix_java_common}apache-commons-lang
+BuildRequires:	%{?scl_prefix_java_common}junit
+BuildRequires:	%{?scl_prefix_java_common}ant
+BuildRequires:	%{?scl_prefix_maven}maven
+BuildRequires:	%{?scl_prefix_maven}maven-plugin-plugin
+BuildRequires:	%{?scl_prefix_java_common}hamcrest
+BuildRequires:	%{?scl_prefix_maven}mockito
+BuildRequires:	%{?scl_prefix_maven}sonatype-oss-parent
+BuildRequires:	%{?scl_prefix_java_common}xerces-j2
+BuildRequires:	%{?scl_prefix_java_common}xml-commons-apis
+%{?scl:Requires: %scl_runtime}
 
-BuildArch:     noarch
+BuildArch:	noarch
 
 %description
 Maven plugin to replace tokens in a given file with a value.
@@ -29,7 +33,7 @@ This plugin is also used to automatically generating PackageVersion.java
 in the FasterXML.com project.
 
 %package javadoc
-Summary:       Javadoc for %{name}
+Summary:	Javadoc for %{name}
 
 %description javadoc
 This package contains javadoc for %{name}.
@@ -37,6 +41,7 @@ This package contains javadoc for %{name}.
 %prep
 %setup -q -n maven-replacer-plugin-%{version}
 
+%{?scl:scl enable %{scl_maven} %{scl} - << "EOF"}
 %pom_remove_plugin :dashboard-maven-plugin
 %pom_remove_plugin :maven-assembly-plugin
 # NoClassDefFoundError: org/w3c/dom/ElementTraversal
@@ -44,15 +49,19 @@ This package contains javadoc for %{name}.
 
 sed -i.hamcrest '/startsWith/d' src/test/java/com/google/code/maven_replacer_plugin/file/FileUtilsTest.java
 
-%mvn_file :%{name} %{name}
-%mvn_alias :%{name} com.google.code.maven-replacer-plugin:maven-replacer-plugin
+%mvn_file :%{pkg_name} %{pkg_name}
+%mvn_alias :%{pkg_name} com.google.code.maven-replacer-plugin:maven-replacer-plugin
+%{?scl:EOF}
 
 %build
-
+%{?scl:scl enable %{scl_maven} %{scl} - << "EOF"}
 %mvn_build
+%{?scl:EOF}
 
 %install
+%{?scl:scl enable %{scl_maven} %{scl} - << "EOF"}
 %mvn_install
+%{?scl:EOF}
 
 %files -f .mfiles
 %doc README.md
@@ -62,6 +71,9 @@ sed -i.hamcrest '/startsWith/d' src/test/java/com/google/code/maven_replacer_plu
 %license LICENSE
 
 %changelog
+* Mon Mar 06 2017 Tomas Repik <trepik@redhat.com> - 1.6-5
+- scl conversion
+
 * Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.6-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 
